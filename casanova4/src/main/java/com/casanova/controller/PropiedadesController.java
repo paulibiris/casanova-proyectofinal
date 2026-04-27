@@ -144,8 +144,11 @@ public class PropiedadesController {
         // Calcular precio total
         LocalDate inicio = LocalDate.parse(fecha_inicio);
         LocalDate fin = LocalDate.parse(fecha_fin);
+        // long noches = ChronoUnit.DAYS.between(inicio, fin);
+        // double precioTotal = noches * propOpt.get().getPrecio_noche();
         long noches = ChronoUnit.DAYS.between(inicio, fin);
-        double precioTotal = noches * propOpt.get().getPrecio_noche();
+        double precioPorDia = propOpt.get().getPrecio_noche() / 30.0;
+        double precioTotal = noches * precioPorDia;
 
         ReservasCasanova reserva = new ReservasCasanova();
         reserva.setId_propiedad(id);

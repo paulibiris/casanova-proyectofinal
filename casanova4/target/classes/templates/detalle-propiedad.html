@@ -132,7 +132,7 @@
                     <!-- Propiedad en venta -->
                     <div th:if="${propiedad.tipo_operacion == 'compra'}" class="text-center">
                         <p class="text-muted">Propiedad en venta</p>
-                        <a href="/contacto" class="btn btn-mi-color w-100 btn-lg">Solicitar información</a>
+                        <a th:href="@{/inicio#contacto}" class="btn btn-mi-color w-100 btn-lg">Solicitar información</a>
                     </div>
 
                     <!-- No logueado -->
