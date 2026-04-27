@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CasaNova - Inicio</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <div th:replace="~{fragments :: navbar}"></div>
+
+    <!-- MODAL LOGIN -->
+    <div th:replace="~{fragments :: loginModal}"></div>
+
+    <!-- ALERTAS -->
+    <div class="container mt-3">
+        <div th:if="${errorLogin}" class="alert alert-danger" th:text="${errorLogin}"></div>
+        <div th:if="${exitoRegistro}" class="alert alert-success" th:text="${exitoRegistro}"></div>
+        <div th:if="${errorRegistro}" class="alert alert-danger" th:text="${errorRegistro}"></div>
+    </div>
+
+    <!-- HERO -->
+    <section class="container-fluid hero-section">
+        <div class="row align-items-center">
+            <div class="col-md-6 p-5">
+                <h1 class="titulo">CasaNova</h1>
+                <h3 class="subtitulo">ESPECIALISTAS EN INMOBILIARIA</h3>
+                <p class="descripcion mt-4">
+                    Tu hogar, tu historia en CasaNova. Gestionamos la venta y alquiler de propiedades
+                    bajo un modelo de transparencia total. Garantizamos precios claros y finales desde
+                    el inicio, eliminando sorpresas y priorizando tu tranquilidad en cada decisión.
+                </p>
+                <a href="/propiedades/compra" class="btn btn-mi-color btn-lg mt-3 me-2">Ver propiedades</a>
+                <a href="/propiedades/alquiler" class="btn btn-outline-light btn-lg mt-3">Alquilar</a>
+            </div>
+            <div class="col-md-6 p-0">
+                <img th:src="@{/img/default.jpg}" class="img-fluid hero-img" alt="Casa moderna">
+            </div>
+        </div>
+    </section>
+
+    <!-- BUSCADOR AVANZADO -->
+    <section class="container my-5 p-4 shadow rounded seccion-color">
+        <h3 class="mb-4 text-center">Buscador</h3>
+        <form action="/propiedades/buscar" method="get">
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label class="form-label">Ciudad</label>
+                    <input type="text" name="ciudad" class="form-control form-color" placeholder="Madrid, Barcelona...">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Tipo de propiedad</label>
+                    <select name="tipo_propiedad" class="form-select form-color">
+                        <option value="">Seleccionar...</option>
+                        <option>Casa</option>
+                        <option>Apartamento</option>
+                        <option>Chalet</option>
+                        <option>Atico</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Operación</label>
+                    <select name="operacion" class="form-select form-color">
+                        <option value="">Seleccionar...</option>
+                        <option value="compra">Compra</option>
+                        <option value="alquiler">Alquiler</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Precio mínimo (€)</label>
+                    <input type="number" name="precioMin" class="form-control form-color" placeholder="0">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Precio máximo (€)</label>
+                    <input type="number" name="precioMax" class="form-control form-color" placeholder="500000">
+                </div>
+                <div class="col-12 text-center mt-3">
+                    <button type="submit" class="btn btn-mi-color px-5">Buscar</button>
+                </div>
+            </div>
+        </form>
+    </section>
+
+    <!-- PROPIEDADES DESTACADAS -->
+    <section class="container my-5">
+        <h2 class="text-center mb-4 h2-color">Propiedades destacadas</h2>
+        <div class="row g-4">
+            <div th:each="prop : ${propiedadesDestacadas}" class="col-md-4">
+                <div class="card shadow h-100">
+                    <img th:src="@{/img/{f}(f=${prop.foto != null ? prop.foto : 'default.jpg'})}"
+                         class="card-img-top img-same-height" th:alt="${prop.titulo}">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title" th:text="${prop.titulo}">Título</h5>
+                        <p class="card-text">
+                            <span th:text="${prop.ciudad}">Ciudad</span>,
+                            <span th:text="${prop.pais}">País</span> ·
+                            <span th:text="${prop.capacidad}">0</span> personas
+                        </p>
+                        <p class="card-text text-muted" th:text="${prop.tipo_propiedad}">Tipo</p>
+                        <p class="precio mt-auto">
+                            <span th:text="${'€' + #numbers.formatDecimal(prop.precio_noche, 0, 'COMMA', 0, 'POINT')}">€0</span>
+                            <small th:if="${prop.tipo_operacion == 'alquiler'}" class="text-muted"> / mes</small>
+                        </p>
+                        <a th:href="@{/propiedades/{id}(id=${prop.id_propiedad})}"
+                           class="btn btn-mi-color w-100 mt-2">Ver detalles</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mensaje si no hay propiedades -->
+            <div th:if="${#lists.isEmpty(propiedadesDestacadas)}" class="col-12 text-center py-5">
+                <p class="text-muted">No hay propiedades disponibles en este momento.</p>
+            </div>
+        </div>
+
+        <div class="text-center mt-4">
+            <a href="/propiedades/compra" class="btn btn-outline-secondary me-2">Ver todas en venta</a>
+            <a href="/propiedades/alquiler" class="btn btn-mi-color">Ver todos en alquiler</a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <div th:replace="~{fragments :: footer}"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Abrir modal si hubo error de login -->
+    <script th:if="${errorLogin}">
+        document.addEventListener('DOMContentLoaded', function() {
+            var loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+            loginModal.show();
+        });
+    </script>
+</body>
+</html>
