@@ -144,8 +144,11 @@ public class PropiedadesController {
         // Calcular precio total
         LocalDate inicio = LocalDate.parse(fecha_inicio);
         LocalDate fin = LocalDate.parse(fecha_fin);
+        // long noches = ChronoUnit.DAYS.between(inicio, fin);
+        // double precioTotal = noches * propOpt.get().getPrecio_noche();
         long noches = ChronoUnit.DAYS.between(inicio, fin);
-        double precioTotal = noches * propOpt.get().getPrecio_noche();
+        double precioPorDia = propOpt.get().getPrecio_noche() / 30.0;
+        double precioTotal = noches * precioPorDia;
 
         ReservasCasanova reserva = new ReservasCasanova();
         reserva.setId_propiedad(id);
@@ -165,18 +168,49 @@ public class PropiedadesController {
     // BUSCADOR GENERAL
     // ==============================
 
-    @GetMapping("/buscar")
-    public String buscar(@RequestParam(required = false) String ciudad,
-                         @RequestParam(required = false) String tipo_propiedad,
-                         @RequestParam(required = false) String operacion,
-                         @RequestParam(required = false) Double precioMin,
-                         @RequestParam(required = false) Double precioMax,
-                         Model model) {
+//     @GetMapping("/buscar")
+//     public String buscar(@RequestParam(required = false) String ciudad,
+//                          @RequestParam(required = false) String tipo_propiedad,
+//                          @RequestParam(required = false) String tipo_operacion,
+//                          @RequestParam(required = false) Double precioMin,
+//                          @RequestParam(required = false) Double precioMax,
+//                          Model model) {
 
-        List<PropiedadesCasanova> propiedades = propiedadesDAO.buscar(ciudad, tipo_propiedad, operacion, precioMin, precioMax);
-        model.addAttribute("propiedades", propiedades);
-        model.addAttribute("ciudad", ciudad);
-        model.addAttribute("operacion", operacion);
-        return "resultados-busqueda";
-    }
+//         List<PropiedadesCasanova> propiedades = propiedadesDAO.buscar(ciudad, tipo_propiedad, tipo_operacion, precioMin, precioMax);
+//         model.addAttribute("propiedades", propiedades);
+//         model.addAttribute("ciudad", ciudad);
+//         model.addAttribute("operacion", tipo_operacion);
+//         return "resultados-busqueda";
+//     }
+// }
+
+        @GetMapping("/buscar")
+        public String buscar(@RequestParam(required = false) String ciudad,
+                            @RequestParam(required = false) String tipo_propiedad,
+                            @RequestParam(required = false) String tipo_operacion,
+                            @RequestParam(required = false) Double precioMin,
+                            @RequestParam(required = false) Double precioMax,
+                            Model model) {
+
+            List<PropiedadesCasanova> propiedades = propiedadesDAO.buscar(
+                    ciudad, tipo_propiedad, tipo_operacion, precioMin, precioMax
+            );
+
+            model.addAttribute("propiedades", propiedades);
+            model.addAttribute("ciudad", ciudad);
+            model.addAttribute("tipo_propiedad", tipo_propiedad);
+            model.addAttribute("tipo_operacion", tipo_operacion);
+
+            // 🔥 MOSTRAR EN LA MISMA PÁGINA SEGÚN LA OPERACIÓN
+            if ("alquiler".equalsIgnoreCase(tipo_operacion)) {
+                return "alquiler";   // muestra alquiler.html
+            }
+
+            if ("compra".equalsIgnoreCase(tipo_operacion)) {
+                return "compra";     // muestra compra.html
+            }
+
+            // Si no elige operación → mostrar compra por defecto (puedes cambiarlo)
+            return "compra";
+        }
 }

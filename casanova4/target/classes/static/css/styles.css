@@ -3,37 +3,41 @@
    ============================== */
 
 :root {
-    --color-primary: #8B6914;
-    --color-primary-dark: #6B4F0F;
-    --color-secondary: #F5ECD7;
-    --color-dark: #1a1a1a;
-    --color-footer: #2c2416;
+    --color-primary: #FEF0E7;
+    --color-primary-dark:#F46C0B;
+    --color-secondary: #ffb78a;
+    --color-dark: #3E1C0A;
+    --color-light: #FFEBE0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--color-primary);
+    color: var(--color-dark);
 }
 
 /* ===== NAVBAR ===== */
 .navbar {
-    background-color: var(--color-dark);
     padding: 1rem 0;
 }
 .navbar .nav-link {
-    color: #ccc !important;
+    color: var(--color-primary-dark) !important;
     transition: color 0.2s;
 }
 .navbar .nav-link:hover,
 .navbar .nav-link.active {
-    color: #fff !important;
+    color: var(--color-dark) !important;
 }
 .navbar-brand {
-    color: var(--color-secondary) !important;
+    color: var(--color-dark) !important;
     font-size: 1.5rem;
     letter-spacing: 0.05em;
 }
 
 /* ===== BOTÓN PRIMARIO ===== */
 .btn-mi-color {
-    background-color: var(--color-primary);
-    color: #fff;
-    border: none;
+    color: var(--color-primary-dark);
+    border: solid 2px var(--color-primary-dark);
     transition: background-color 0.2s, transform 0.1s;
 }
 .btn-mi-color:hover {
@@ -42,9 +46,21 @@
     transform: translateY(-1px);
 }
 
+.btn-mi-color2 {
+    color: var(--color-dark);
+    border: solid 2px var(--color-dark);
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.btn-mi-color2:hover {
+    background-color: var(--color-dark);
+    color: #fff;
+    transform: translateY(-1px);
+}
+
 /* ===== HERO SECTION ===== */
 .hero-section {
-    background-color: var(--color-dark);
+    background-color: var(--color-primary);
     color: #fff;
     min-height: 75vh;
     display: flex;
@@ -53,17 +69,17 @@
 .titulo {
     font-size: 3.5rem;
     font-weight: 800;
-    color: var(--color-secondary);
+    color: var(--color-primary-dark);
     letter-spacing: -0.02em;
 }
 .subtitulo {
     font-size: 1rem;
     letter-spacing: 0.3em;
-    color: var(--color-primary);
+    color: var(--color-primary-dark);
     font-weight: 600;
 }
 .descripcion {
-    color: #aaa;
+    color: #333;
     font-size: 1.05rem;
     line-height: 1.8;
 }
@@ -75,10 +91,10 @@
 
 /* ===== SECCIONES ===== */
 .seccion-color {
-    background-color: #f8f4ee;
+    background-color: var(--color-secondary);
 }
 .form-color {
-    background-color: #fff;
+    background-color: var(--color-primary);
 }
 .h2-color {
     color: var(--color-dark);
@@ -103,12 +119,12 @@
 .precio {
     font-size: 1.4rem;
     font-weight: 700;
-    color: var(--color-primary);
+    color: var(--color-primary-dark);
 }
 
 /* ===== FOOTER ===== */
 .footer-casanova {
-    background-color: var(--color-footer);
+    background-color: var(--color-dark);
 }
 .footer-link {
     color: #aaa;
